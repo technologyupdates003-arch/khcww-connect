@@ -1,9 +1,32 @@
 import { Link } from "@tanstack/react-router";
-import { Facebook, Twitter, Instagram, Youtube, Mail, Phone, MapPin } from "lucide-react";
+import { useState } from "react";
+import { Facebook, Twitter, Instagram, Youtube, Mail, Phone, MapPin, Send, Loader2 } from "lucide-react";
 import logo from "@/assets/khcww-logo.png.asset.json";
 import { SITE } from "@/lib/site-data";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export function Footer() {
+  const [email, setEmail] = useState("");
+  const [busy, setBusy] = useState(false);
+
+  const subscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+    setBusy(true);
+    const { error } = await supabase.from("newsletter_subscribers").insert({ email });
+    setBusy(false);
+    if (error) {
+      if (error.code === "23505") toast.info("You're already subscribed.");
+      else toast.error(error.message);
+      return;
+    }
+    toast.success("Subscribed — thank you!");
+    setEmail("");
+  };
+
   return (
     <footer className="mt-24 border-t border-border bg-surface-2">
       <div className="container-x py-14 grid gap-10 md:grid-cols-4">
@@ -18,6 +41,19 @@ export function Footer() {
             </div>
           </div>
           <p className="mt-4 text-sm text-muted-foreground">{SITE.description}</p>
+          <form onSubmit={subscribe} className="mt-5 flex gap-2 max-w-sm">
+            <Input
+              type="email"
+              required
+              placeholder="Subscribe to our newsletter"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="bg-card"
+            />
+            <Button type="submit" disabled={busy} size="icon" className="brand-gradient text-white border-0 shrink-0">
+              {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+            </Button>
+          </form>
           <div className="mt-5 flex gap-3">
             {[
               { Icon: Facebook, href: SITE.socials.facebook, label: "Facebook" },
@@ -50,7 +86,7 @@ export function Footer() {
               ["/downloads", "Downloads"],
             ].map(([to, label]) => (
               <li key={to}>
-                <Link to={to} className="hover:text-foreground transition-colors">
+                <Link to={to as any} className="hover:text-foreground transition-colors">
                   {label}
                 </Link>
               </li>
@@ -75,7 +111,10 @@ export function Footer() {
       <div className="border-t border-border">
         <div className="container-x py-5 flex flex-col sm:flex-row gap-2 items-center justify-between text-xs text-muted-foreground">
           <div>© {new Date().getFullYear()} {SITE.name}. All rights reserved.</div>
-          <div>Care · Support · Unity</div>
+          <div className="flex items-center gap-4">
+            <span>Care · Support · Unity</span>
+            <Link to="/auth" className="opacity-60 hover:opacity-100">Admin</Link>
+          </div>
         </div>
       </div>
     </footer>
