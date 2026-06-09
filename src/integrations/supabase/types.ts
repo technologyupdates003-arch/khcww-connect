@@ -301,6 +301,7 @@ export type Database = {
           activities: string[]
           created_at: string
           id: string
+          image_url: string | null
           leader_name: string | null
           members: string[]
           name: string
@@ -314,6 +315,7 @@ export type Database = {
           activities?: string[]
           created_at?: string
           id?: string
+          image_url?: string | null
           leader_name?: string | null
           members?: string[]
           name: string
@@ -327,6 +329,7 @@ export type Database = {
           activities?: string[]
           created_at?: string
           id?: string
+          image_url?: string | null
           leader_name?: string | null
           members?: string[]
           name?: string
