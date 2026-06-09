@@ -3,7 +3,7 @@
 
 export const WMS_API_BASE =
   (import.meta.env.VITE_WMS_API_BASE as string | undefined) ??
-  "https://your-project.supabase.co/functions/v1";
+  "https://ubdhljxyleqsixrewtto.supabase.co/functions/v1";
 
 export interface WmsConfig {
   registration_fee: number;
