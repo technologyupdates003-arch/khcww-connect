@@ -1,7 +1,12 @@
 import { Link } from "@tanstack/react-router";
-import { Facebook, Twitter, Instagram, Youtube, Mail, Phone, MapPin } from "lucide-react";
+import { useState } from "react";
+import { Facebook, Twitter, Instagram, Youtube, Mail, Phone, MapPin, Send, Loader2 } from "lucide-react";
 import logo from "@/assets/khcww-logo.png.asset.json";
 import { SITE } from "@/lib/site-data";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export function Footer() {
   return (
