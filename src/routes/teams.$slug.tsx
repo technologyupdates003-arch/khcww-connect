@@ -1,10 +1,10 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, CheckCircle2, ImageIcon, User } from "lucide-react";
 import { SiteLayout } from "@/components/site/SiteLayout";
-import { TEAMS } from "@/lib/site-data";
+import { TEAMS, type Team } from "@/lib/site-data";
 
 export const Route = createFileRoute("/teams/$slug")({
-  loader: ({ params }) => {
+  loader: ({ params }): { team: Team } => {
     const team = TEAMS.find((t) => t.slug === params.slug);
     if (!team) throw notFound();
     return { team };
