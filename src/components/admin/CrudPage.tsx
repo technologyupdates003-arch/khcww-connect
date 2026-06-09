@@ -15,7 +15,7 @@ import {
 import { Plus, Pencil, Trash2, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
-export type FieldType = "text" | "textarea" | "url" | "number" | "datetime" | "boolean" | "list" | "select";
+export type FieldType = "text" | "textarea" | "url" | "number" | "datetime" | "boolean" | "list" | "select" | "image";
 
 export interface FieldDef {
   name: string;
@@ -261,6 +261,11 @@ function FormDialog({
                   <option value="">Select…</option>
                   {f.options?.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
                 </select>
+              ) : f.type === "image" ? (
+                <ImageUploadField
+                  value={values[f.name] ?? ""}
+                  onChange={(url) => setValues((v) => ({ ...v, [f.name]: url }))}
+                />
               ) : (
                 <Input
                   type={f.type === "datetime" ? "datetime-local" : f.type === "number" ? "number" : f.type === "url" ? "url" : "text"}
@@ -282,5 +287,32 @@ function FormDialog({
         </form>
       </DialogContent>
     </Dialog>
+  );
+}
+
+function ImageUploadField({ value, onChange }: { value: string; onChange: (url: string) => void }) {
+  const [busy, setBusy] = useState(false);
+  const onPick = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setBusy(true);
+    const ext = file.name.split(".").pop() || "jpg";
+    const path = `${crypto.randomUUID()}.${ext}`;
+    const { error } = await supabase.storage.from("public-images").upload(path, file, { contentType: file.type, upsert: false });
+    if (error) { toast.error(error.message); setBusy(false); return; }
+    const { data } = supabase.storage.from("public-images").getPublicUrl(path);
+    onChange(data.publicUrl);
+    setBusy(false);
+  };
+  return (
+    <div className="grid gap-2">
+      {value && <img src={value} alt="" className="h-24 w-24 rounded-md object-cover border border-border" />}
+      <div className="flex items-center gap-2">
+        <Input type="file" accept="image/*" onChange={onPick} disabled={busy} />
+        {value && <Button type="button" variant="ghost" size="sm" onClick={() => onChange("")}>Clear</Button>}
+      </div>
+      {busy && <p className="text-xs text-muted-foreground inline-flex items-center gap-1"><Loader2 className="h-3 w-3 animate-spin" /> Uploading…</p>}
+      <Input type="url" placeholder="…or paste an image URL" value={value} onChange={(e) => onChange(e.target.value)} />
+    </div>
   );
 }

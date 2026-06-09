@@ -29,7 +29,7 @@ export const Route = createFileRoute("/_authenticated/admin/leaders")({
               { value: "welfare_committee", label: "Welfare Committee" },
             ] },
           { name: "initials", label: "Initials (avatar fallback)", type: "text", help: "2-letter shortcode, e.g. CP" },
-          { name: "photo_url", label: "Photo URL", type: "url" },
+          { name: "photo_url", label: "Photo", type: "image" },
           { name: "bio", label: "Short bio", type: "textarea" },
           { name: "sort_order", label: "Sort order", type: "number", defaultValue: 0 },
           { name: "published", label: "Visible on website", type: "boolean", defaultValue: true },

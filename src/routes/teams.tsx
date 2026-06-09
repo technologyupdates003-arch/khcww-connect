@@ -23,6 +23,7 @@ interface TeamRow {
   slug: string;
   name: string;
   short: string | null;
+  image_url: string | null;
 }
 
 function TeamsIndex() {
@@ -33,7 +34,7 @@ function TeamsIndex() {
     (async () => {
       const { data } = await (supabase as any)
         .from("teams")
-        .select("id,slug,name,short")
+        .select("id,slug,name,short,image_url")
         .eq("published", true)
         .order("sort_order", { ascending: true });
       setRows((data as TeamRow[]) ?? []);
@@ -60,17 +61,22 @@ function TeamsIndex() {
                 key={t.id}
                 to="/teams/$slug"
                 params={{ slug: t.slug }}
-                className="group rounded-2xl border border-border bg-card p-6 hover:border-accent/60 hover:shadow-soft transition-all"
+                className="group rounded-2xl border border-border bg-card overflow-hidden hover:border-accent/60 hover:shadow-soft transition-all"
               >
-                <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-lg brand-gradient grid place-items-center text-white">
-                    <Users className="h-5 w-5" />
+                {t.image_url && (
+                  <img src={t.image_url} alt={t.name} className="w-full h-40 object-cover" />
+                )}
+                <div className="p-6">
+                  <div className="flex items-center gap-3">
+                    <div className="h-10 w-10 rounded-lg brand-gradient grid place-items-center text-white">
+                      <Users className="h-5 w-5" />
+                    </div>
+                    <h3 className="font-display text-lg">{t.name}</h3>
                   </div>
-                  <h3 className="font-display text-lg">{t.name}</h3>
-                </div>
-                {t.short && <p className="mt-3 text-sm text-muted-foreground">{t.short}</p>}
-                <div className="mt-4 text-xs font-medium text-primary inline-flex items-center gap-1 group-hover:gap-2 transition-all">
-                  View team <ArrowRight className="h-3.5 w-3.5" />
+                  {t.short && <p className="mt-3 text-sm text-muted-foreground">{t.short}</p>}
+                  <div className="mt-4 text-xs font-medium text-primary inline-flex items-center gap-1 group-hover:gap-2 transition-all">
+                    View team <ArrowRight className="h-3.5 w-3.5" />
+                  </div>
                 </div>
               </Link>
             ))}

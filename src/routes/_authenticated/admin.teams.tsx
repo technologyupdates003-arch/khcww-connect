@@ -24,6 +24,7 @@ export const Route = createFileRoute("/_authenticated/admin/teams")({
           { name: "name", label: "Team name", type: "text", required: true },
           { name: "slug", label: "Slug", type: "text", required: true, help: "URL identifier, e.g. 'welfare', 'finance'. Lowercase, no spaces." },
           { name: "short", label: "Short description", type: "textarea" },
+          { name: "image_url", label: "Team image", type: "image" },
           { name: "leader_name", label: "Team leader name", type: "text" },
           { name: "members", label: "Members (one per line)", type: "list" },
           { name: "activities", label: "Activities (one per line)", type: "list" },
