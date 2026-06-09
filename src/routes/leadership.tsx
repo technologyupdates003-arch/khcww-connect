@@ -34,8 +34,8 @@ function Leadership() {
 
   useEffect(() => {
     (async () => {
-      const { data } = await supabase
-        .from("leaders" as any)
+      const { data } = await (supabase as any)
+        .from("leaders")
         .select("id,name,role,bio,initials,photo_url,group_type")
         .eq("published", true)
         .order("sort_order", { ascending: true });
