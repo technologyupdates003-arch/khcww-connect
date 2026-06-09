@@ -236,6 +236,48 @@ export type Database = {
         }
         Relationships: []
       }
+      leaders: {
+        Row: {
+          bio: string | null
+          created_at: string
+          group_type: string
+          id: string
+          initials: string | null
+          name: string
+          photo_url: string | null
+          published: boolean
+          role: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          bio?: string | null
+          created_at?: string
+          group_type: string
+          id?: string
+          initials?: string | null
+          name: string
+          photo_url?: string | null
+          published?: boolean
+          role: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          bio?: string | null
+          created_at?: string
+          group_type?: string
+          id?: string
+          initials?: string | null
+          name?: string
+          photo_url?: string | null
+          published?: boolean
+          role?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       newsletter_subscribers: {
         Row: {
           created_at: string
@@ -251,6 +293,48 @@ export type Database = {
           created_at?: string
           email?: string
           id?: string
+        }
+        Relationships: []
+      }
+      teams: {
+        Row: {
+          activities: string[]
+          created_at: string
+          id: string
+          leader_name: string | null
+          members: string[]
+          name: string
+          published: boolean
+          short: string | null
+          slug: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          activities?: string[]
+          created_at?: string
+          id?: string
+          leader_name?: string | null
+          members?: string[]
+          name: string
+          published?: boolean
+          short?: string | null
+          slug: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          activities?: string[]
+          created_at?: string
+          id?: string
+          leader_name?: string | null
+          members?: string[]
+          name?: string
+          published?: boolean
+          short?: string | null
+          slug?: string
+          sort_order?: number
+          updated_at?: string
         }
         Relationships: []
       }
