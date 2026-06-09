@@ -12,6 +12,7 @@ interface TeamRow {
   leader_name: string | null;
   members: string[];
   activities: string[];
+  image_url: string | null;
 }
 
 export const Route = createFileRoute("/teams/$slug")({
