@@ -92,6 +92,7 @@ export function AdminLayout({ title, children }: { title: string; children: Reac
         <nav className="p-3 grid gap-1">
           {NAV.map((n) => {
             const active = n.exact ? path === n.to : path.startsWith(n.to);
+            const showBadge = n.to === "/admin/messages" && unread > 0;
             return (
               <Link
                 key={n.to}
@@ -101,7 +102,12 @@ export function AdminLayout({ title, children }: { title: string; children: Reac
                 }`}
               >
                 <n.icon className="h-4 w-4" />
-                {n.label}
+                <span className="flex-1">{n.label}</span>
+                {showBadge && (
+                  <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full ${active ? "bg-white/25 text-white" : "bg-accent text-accent-foreground"}`}>
+                    {unread}
+                  </span>
+                )}
               </Link>
             );
           })}
