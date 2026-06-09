@@ -1,27 +1,30 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { ArrowLeft, CheckCircle2, ImageIcon, User } from "lucide-react";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { ArrowLeft, CheckCircle2, ImageIcon, Loader2, User } from "lucide-react";
 import { SiteLayout } from "@/components/site/SiteLayout";
-import { TEAMS, type Team } from "@/lib/site-data";
+import { supabase } from "@/integrations/supabase/client";
+
+interface TeamRow {
+  id: string;
+  slug: string;
+  name: string;
+  short: string | null;
+  leader_name: string | null;
+  members: string[];
+  activities: string[];
+}
 
 export const Route = createFileRoute("/teams/$slug")({
-  loader: ({ params }): { team: Team } => {
-    const team = TEAMS.find((t) => t.slug === params.slug);
-    if (!team) throw notFound();
-    return { team };
-  },
-  head: ({ loaderData }) => {
-    const team = loaderData?.team;
-    const title = team ? `${team.name} — KHCWW` : "Team — KHCWW";
-    const desc = team?.short ?? "KHCWW welfare team";
+  head: ({ params }) => {
+    const title = `${params.slug} — KHCWW`;
     return {
       meta: [
         { title },
-        { name: "description", content: desc },
+        { name: "description", content: "KHCWW welfare team" },
         { property: "og:title", content: title },
-        { property: "og:description", content: desc },
-        { property: "og:url", content: `/teams/${team?.slug ?? ""}` },
+        { property: "og:url", content: `/teams/${params.slug}` },
       ],
-      links: team ? [{ rel: "canonical", href: `/teams/${team.slug}` }] : [],
+      links: [{ rel: "canonical", href: `/teams/${params.slug}` }],
     };
   },
   component: TeamPage,
@@ -29,9 +32,7 @@ export const Route = createFileRoute("/teams/$slug")({
     <SiteLayout>
       <div className="container-x py-24 text-center">
         <h1 className="font-display text-3xl">Team not found</h1>
-        <Link to="/teams" className="mt-4 inline-block text-primary hover:underline">
-          ← Back to teams
-        </Link>
+        <Link to="/teams" className="mt-4 inline-block text-primary hover:underline">← Back to teams</Link>
       </div>
     </SiteLayout>
   ),
@@ -43,20 +44,53 @@ export const Route = createFileRoute("/teams/$slug")({
 });
 
 function TeamPage() {
-  const { team } = Route.useLoaderData() as { team: Team };
+  const { slug } = Route.useParams();
+  const [team, setTeam] = useState<TeamRow | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    (async () => {
+      const { data } = await (supabase as any)
+        .from("teams")
+        .select("id,slug,name,short,leader_name,members,activities")
+        .eq("slug", slug)
+        .eq("published", true)
+        .maybeSingle();
+      setTeam((data as TeamRow) ?? null);
+      setLoading(false);
+    })();
+  }, [slug]);
+
+  if (loading) {
+    return (
+      <SiteLayout>
+        <div className="container-x py-24 text-center text-muted-foreground">
+          <Loader2 className="h-6 w-6 mx-auto animate-spin" />
+        </div>
+      </SiteLayout>
+    );
+  }
+  if (!team) {
+    return (
+      <SiteLayout>
+        <div className="container-x py-24 text-center">
+          <h1 className="font-display text-3xl">Team not found</h1>
+          <Link to="/teams" className="mt-4 inline-block text-primary hover:underline">← Back to teams</Link>
+        </div>
+      </SiteLayout>
+    );
+  }
+
   return (
     <SiteLayout>
       <section className="hero-radial border-b border-border">
         <div className="container-x py-14 md:py-20">
-          <Link
-            to="/teams"
-            className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6"
-          >
+          <Link to="/teams" className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6">
             <ArrowLeft className="h-4 w-4" /> All teams
           </Link>
           <div className="text-xs uppercase tracking-[0.22em] text-accent-foreground/80">Welfare team</div>
           <h1 className="mt-2 text-4xl md:text-5xl font-semibold">{team.name}</h1>
-          <p className="mt-4 max-w-2xl text-muted-foreground text-lg">{team.short}</p>
+          {team.short && <p className="mt-4 max-w-2xl text-muted-foreground text-lg">{team.short}</p>}
         </div>
       </section>
 
@@ -68,7 +102,7 @@ function TeamPage() {
               <User className="h-5 w-5" />
             </div>
             <div>
-              <div className="font-display text-lg">{team.leader}</div>
+              <div className="font-display text-lg">{team.leader_name ?? "—"}</div>
               <div className="text-xs text-muted-foreground">Team Lead</div>
             </div>
           </div>
@@ -76,29 +110,35 @@ function TeamPage() {
 
         <div className="rounded-2xl border border-border bg-card p-6 lg:col-span-2">
           <h2 className="font-semibold mb-3">Team members</h2>
-          <ul className="grid sm:grid-cols-2 gap-2 text-sm">
-            {team.members.map((m) => (
-              <li key={m} className="flex items-center gap-2">
-                <span className="h-2 w-2 rounded-full brand-gradient" /> {m}
-              </li>
-            ))}
-          </ul>
+          {team.members.length === 0 ? (
+            <p className="text-sm text-muted-foreground">No members listed yet.</p>
+          ) : (
+            <ul className="grid sm:grid-cols-2 gap-2 text-sm">
+              {team.members.map((m, i) => (
+                <li key={`${m}-${i}`} className="flex items-center gap-2">
+                  <span className="h-2 w-2 rounded-full brand-gradient" /> {m}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
       </section>
 
-      <section className="container-x pb-14">
-        <div className="rounded-2xl border border-border bg-card p-7">
-          <h2 className="text-xl font-semibold mb-4">Activities</h2>
-          <ul className="space-y-3">
-            {team.activities.map((a) => (
-              <li key={a} className="flex gap-3 text-sm">
-                <CheckCircle2 className="h-5 w-5 text-accent shrink-0" />
-                <span>{a}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
+      {team.activities.length > 0 && (
+        <section className="container-x pb-14">
+          <div className="rounded-2xl border border-border bg-card p-7">
+            <h2 className="text-xl font-semibold mb-4">Activities</h2>
+            <ul className="space-y-3">
+              {team.activities.map((a, i) => (
+                <li key={`${a}-${i}`} className="flex gap-3 text-sm">
+                  <CheckCircle2 className="h-5 w-5 text-accent shrink-0" />
+                  <span>{a}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
 
       <section className="container-x pb-20">
         <div className="rounded-2xl border border-dashed border-border bg-surface-2 p-10 text-center">

@@ -2,7 +2,7 @@ import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 import {
   LayoutDashboard, Newspaper, Image as ImageIcon, Calendar,
-  Download, Mail, Megaphone, Users, LogOut, Globe,
+  Download, Mail, Megaphone, Users, LogOut, Globe, UserSquare2, Users2,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/use-auth";
@@ -18,6 +18,8 @@ const NAV: NavItem[] = [
   { to: "/admin/events", label: "Events", icon: Calendar },
   { to: "/admin/downloads", label: "Downloads", icon: Download },
   { to: "/admin/banners", label: "Hero banners", icon: Megaphone },
+  { to: "/admin/leaders", label: "Leadership", icon: UserSquare2 },
+  { to: "/admin/teams", label: "Welfare teams", icon: Users2 },
   { to: "/admin/messages", label: "Messages", icon: Mail },
   { to: "/admin/subscribers", label: "Subscribers", icon: Users },
 ];
