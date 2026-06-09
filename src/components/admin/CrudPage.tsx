@@ -261,6 +261,11 @@ function FormDialog({
                   <option value="">Select…</option>
                   {f.options?.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
                 </select>
+              ) : f.type === "image" ? (
+                <ImageUploadField
+                  value={values[f.name] ?? ""}
+                  onChange={(url) => setValues((v) => ({ ...v, [f.name]: url }))}
+                />
               ) : (
                 <Input
                   type={f.type === "datetime" ? "datetime-local" : f.type === "number" ? "number" : f.type === "url" ? "url" : "text"}
