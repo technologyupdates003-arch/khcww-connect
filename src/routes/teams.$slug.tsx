@@ -43,7 +43,7 @@ export const Route = createFileRoute("/teams/$slug")({
 });
 
 function TeamPage() {
-  const { team } = Route.useLoaderData();
+  const { team } = Route.useLoaderData() as { team: Team };
   return (
     <SiteLayout>
       <section className="hero-radial border-b border-border">
