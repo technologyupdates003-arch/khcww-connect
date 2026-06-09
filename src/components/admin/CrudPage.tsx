@@ -25,6 +25,7 @@ export interface FieldDef {
   placeholder?: string;
   defaultValue?: any;
   help?: string;
+  options?: { value: string; label: string }[];
 }
 
 export interface ColumnDef<T> {
