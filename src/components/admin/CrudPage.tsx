@@ -189,11 +189,11 @@ function FormDialog({
       for (const f of fields) {
         const v = initial?.[f.name];
         if (v !== undefined && v !== null) {
-          init[f.name] = f.type === "datetime" && typeof v === "string"
-            ? v.slice(0, 16)
-            : v;
+          if (f.type === "datetime" && typeof v === "string") init[f.name] = v.slice(0, 16);
+          else if (f.type === "list" && Array.isArray(v)) init[f.name] = v.join("\n");
+          else init[f.name] = v;
         } else if (f.defaultValue !== undefined) {
-          init[f.name] = f.defaultValue;
+          init[f.name] = f.type === "list" && Array.isArray(f.defaultValue) ? f.defaultValue.join("\n") : f.defaultValue;
         } else {
           init[f.name] = f.type === "boolean" ? false : f.type === "number" ? 0 : "";
         }
@@ -210,13 +210,19 @@ function FormDialog({
       let v = values[f.name];
       if (f.type === "number") v = v === "" ? null : Number(v);
       if (f.type === "datetime") v = v ? new Date(v).toISOString() : null;
-      if ((v === "" || v === undefined) && !f.required) v = null;
+      if (f.type === "list") {
+        v = typeof v === "string"
+          ? v.split("\n").map((s) => s.trim()).filter(Boolean)
+          : Array.isArray(v) ? v : [];
+      }
+      if ((v === "" || v === undefined) && !f.required && f.type !== "list") v = null;
       payload[f.name] = v;
     }
     const ok = await onSubmit(payload);
     setBusy(false);
     if (ok) onClose();
   };
+
 
   return (
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
