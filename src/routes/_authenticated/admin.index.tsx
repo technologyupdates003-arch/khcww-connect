@@ -38,7 +38,7 @@ function AdminDashboard() {
         {CARDS.map((c) => (
           <Link
             key={c.key}
-            to={c.to}
+            to={c.to as any}
             className="group rounded-2xl border border-border bg-card p-5 hover:shadow-soft transition-all"
           >
             <div className="flex items-center justify-between">

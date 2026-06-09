@@ -23,7 +23,6 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TeamsSlugRouteImport } from './routes/teams.$slug'
-import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 import { Route as AuthenticatedAdminSubscribersRouteImport } from './routes/_authenticated/admin.subscribers'
 import { Route as AuthenticatedAdminPostsRouteImport } from './routes/_authenticated/admin.posts'
@@ -102,56 +101,51 @@ const TeamsSlugRoute = TeamsSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => TeamsRoute,
 } as any)
-const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
 const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AuthenticatedAdminRoute,
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedAdminSubscribersRoute =
   AuthenticatedAdminSubscribersRouteImport.update({
-    id: '/subscribers',
-    path: '/subscribers',
-    getParentRoute: () => AuthenticatedAdminRoute,
+    id: '/admin/subscribers',
+    path: '/admin/subscribers',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedAdminPostsRoute = AuthenticatedAdminPostsRouteImport.update({
-  id: '/posts',
-  path: '/posts',
-  getParentRoute: () => AuthenticatedAdminRoute,
+  id: '/admin/posts',
+  path: '/admin/posts',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedAdminMessagesRoute =
   AuthenticatedAdminMessagesRouteImport.update({
-    id: '/messages',
-    path: '/messages',
-    getParentRoute: () => AuthenticatedAdminRoute,
+    id: '/admin/messages',
+    path: '/admin/messages',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedAdminGalleryRoute =
   AuthenticatedAdminGalleryRouteImport.update({
-    id: '/gallery',
-    path: '/gallery',
-    getParentRoute: () => AuthenticatedAdminRoute,
+    id: '/admin/gallery',
+    path: '/admin/gallery',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedAdminEventsRoute =
   AuthenticatedAdminEventsRouteImport.update({
-    id: '/events',
-    path: '/events',
-    getParentRoute: () => AuthenticatedAdminRoute,
+    id: '/admin/events',
+    path: '/admin/events',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedAdminDownloadsRoute =
   AuthenticatedAdminDownloadsRouteImport.update({
-    id: '/downloads',
-    path: '/downloads',
-    getParentRoute: () => AuthenticatedAdminRoute,
+    id: '/admin/downloads',
+    path: '/admin/downloads',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedAdminBannersRoute =
   AuthenticatedAdminBannersRouteImport.update({
-    id: '/banners',
-    path: '/banners',
-    getParentRoute: () => AuthenticatedAdminRoute,
+    id: '/admin/banners',
+    path: '/admin/banners',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -167,7 +161,6 @@ export interface FileRoutesByFullPath {
   '/membership': typeof MembershipRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/teams': typeof TeamsRouteWithChildren
-  '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/teams/$slug': typeof TeamsSlugRoute
   '/admin/banners': typeof AuthenticatedAdminBannersRoute
   '/admin/downloads': typeof AuthenticatedAdminDownloadsRoute
@@ -216,7 +209,6 @@ export interface FileRoutesById {
   '/membership': typeof MembershipRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/teams': typeof TeamsRouteWithChildren
-  '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/teams/$slug': typeof TeamsSlugRoute
   '/_authenticated/admin/banners': typeof AuthenticatedAdminBannersRoute
   '/_authenticated/admin/downloads': typeof AuthenticatedAdminDownloadsRoute
@@ -242,7 +234,6 @@ export interface FileRouteTypes {
     | '/membership'
     | '/sitemap.xml'
     | '/teams'
-    | '/admin'
     | '/teams/$slug'
     | '/admin/banners'
     | '/admin/downloads'
@@ -290,7 +281,6 @@ export interface FileRouteTypes {
     | '/membership'
     | '/sitemap.xml'
     | '/teams'
-    | '/_authenticated/admin'
     | '/teams/$slug'
     | '/_authenticated/admin/banners'
     | '/_authenticated/admin/downloads'
@@ -418,73 +408,66 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TeamsSlugRouteImport
       parentRoute: typeof TeamsRoute
     }
-    '/_authenticated/admin': {
-      id: '/_authenticated/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AuthenticatedAdminRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
     '/_authenticated/admin/': {
       id: '/_authenticated/admin/'
-      path: '/'
+      path: '/admin'
       fullPath: '/admin/'
       preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/admin/subscribers': {
       id: '/_authenticated/admin/subscribers'
-      path: '/subscribers'
+      path: '/admin/subscribers'
       fullPath: '/admin/subscribers'
       preLoaderRoute: typeof AuthenticatedAdminSubscribersRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/admin/posts': {
       id: '/_authenticated/admin/posts'
-      path: '/posts'
+      path: '/admin/posts'
       fullPath: '/admin/posts'
       preLoaderRoute: typeof AuthenticatedAdminPostsRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/admin/messages': {
       id: '/_authenticated/admin/messages'
-      path: '/messages'
+      path: '/admin/messages'
       fullPath: '/admin/messages'
       preLoaderRoute: typeof AuthenticatedAdminMessagesRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/admin/gallery': {
       id: '/_authenticated/admin/gallery'
-      path: '/gallery'
+      path: '/admin/gallery'
       fullPath: '/admin/gallery'
       preLoaderRoute: typeof AuthenticatedAdminGalleryRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/admin/events': {
       id: '/_authenticated/admin/events'
-      path: '/events'
+      path: '/admin/events'
       fullPath: '/admin/events'
       preLoaderRoute: typeof AuthenticatedAdminEventsRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/admin/downloads': {
       id: '/_authenticated/admin/downloads'
-      path: '/downloads'
+      path: '/admin/downloads'
       fullPath: '/admin/downloads'
       preLoaderRoute: typeof AuthenticatedAdminDownloadsRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/admin/banners': {
       id: '/_authenticated/admin/banners'
-      path: '/banners'
+      path: '/admin/banners'
       fullPath: '/admin/banners'
       preLoaderRoute: typeof AuthenticatedAdminBannersRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      parentRoute: typeof AuthenticatedRouteRoute
     }
   }
 }
 
-interface AuthenticatedAdminRouteChildren {
+interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminBannersRoute: typeof AuthenticatedAdminBannersRoute
   AuthenticatedAdminDownloadsRoute: typeof AuthenticatedAdminDownloadsRoute
   AuthenticatedAdminEventsRoute: typeof AuthenticatedAdminEventsRoute
@@ -495,7 +478,7 @@ interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
 
-const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminBannersRoute: AuthenticatedAdminBannersRoute,
   AuthenticatedAdminDownloadsRoute: AuthenticatedAdminDownloadsRoute,
   AuthenticatedAdminEventsRoute: AuthenticatedAdminEventsRoute,
@@ -504,17 +487,6 @@ const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminPostsRoute: AuthenticatedAdminPostsRoute,
   AuthenticatedAdminSubscribersRoute: AuthenticatedAdminSubscribersRoute,
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
-}
-
-const AuthenticatedAdminRouteWithChildren =
-  AuthenticatedAdminRoute._addFileChildren(AuthenticatedAdminRouteChildren)
-
-interface AuthenticatedRouteRouteChildren {
-  AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
-}
-
-const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
-  AuthenticatedAdminRoute: AuthenticatedAdminRouteWithChildren,
 }
 
 const AuthenticatedRouteRouteWithChildren =
@@ -548,3 +520,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
