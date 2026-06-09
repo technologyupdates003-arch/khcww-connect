@@ -23,6 +23,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TeamsSlugRouteImport } from './routes/teams.$slug'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 import { Route as AuthenticatedAdminSubscribersRouteImport } from './routes/_authenticated/admin.subscribers'
 import { Route as AuthenticatedAdminPostsRouteImport } from './routes/_authenticated/admin.posts'
@@ -101,6 +102,11 @@ const TeamsSlugRoute = TeamsSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => TeamsRoute,
 } as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => BlogRoute,
+} as any)
 const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   id: '/admin/',
   path: '/admin/',
@@ -152,7 +158,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
-  '/blog': typeof BlogRoute
+  '/blog': typeof BlogRouteWithChildren
   '/contact': typeof ContactRoute
   '/downloads': typeof DownloadsRoute
   '/events': typeof EventsRoute
@@ -161,6 +167,7 @@ export interface FileRoutesByFullPath {
   '/membership': typeof MembershipRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/teams': typeof TeamsRouteWithChildren
+  '/blog/$slug': typeof BlogSlugRoute
   '/teams/$slug': typeof TeamsSlugRoute
   '/admin/banners': typeof AuthenticatedAdminBannersRoute
   '/admin/downloads': typeof AuthenticatedAdminDownloadsRoute
@@ -175,7 +182,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
-  '/blog': typeof BlogRoute
+  '/blog': typeof BlogRouteWithChildren
   '/contact': typeof ContactRoute
   '/downloads': typeof DownloadsRoute
   '/events': typeof EventsRoute
@@ -184,6 +191,7 @@ export interface FileRoutesByTo {
   '/membership': typeof MembershipRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/teams': typeof TeamsRouteWithChildren
+  '/blog/$slug': typeof BlogSlugRoute
   '/teams/$slug': typeof TeamsSlugRoute
   '/admin/banners': typeof AuthenticatedAdminBannersRoute
   '/admin/downloads': typeof AuthenticatedAdminDownloadsRoute
@@ -200,7 +208,7 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/auth': typeof AuthRoute
-  '/blog': typeof BlogRoute
+  '/blog': typeof BlogRouteWithChildren
   '/contact': typeof ContactRoute
   '/downloads': typeof DownloadsRoute
   '/events': typeof EventsRoute
@@ -209,6 +217,7 @@ export interface FileRoutesById {
   '/membership': typeof MembershipRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/teams': typeof TeamsRouteWithChildren
+  '/blog/$slug': typeof BlogSlugRoute
   '/teams/$slug': typeof TeamsSlugRoute
   '/_authenticated/admin/banners': typeof AuthenticatedAdminBannersRoute
   '/_authenticated/admin/downloads': typeof AuthenticatedAdminDownloadsRoute
@@ -234,6 +243,7 @@ export interface FileRouteTypes {
     | '/membership'
     | '/sitemap.xml'
     | '/teams'
+    | '/blog/$slug'
     | '/teams/$slug'
     | '/admin/banners'
     | '/admin/downloads'
@@ -257,6 +267,7 @@ export interface FileRouteTypes {
     | '/membership'
     | '/sitemap.xml'
     | '/teams'
+    | '/blog/$slug'
     | '/teams/$slug'
     | '/admin/banners'
     | '/admin/downloads'
@@ -281,6 +292,7 @@ export interface FileRouteTypes {
     | '/membership'
     | '/sitemap.xml'
     | '/teams'
+    | '/blog/$slug'
     | '/teams/$slug'
     | '/_authenticated/admin/banners'
     | '/_authenticated/admin/downloads'
@@ -297,7 +309,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
   AuthRoute: typeof AuthRoute
-  BlogRoute: typeof BlogRoute
+  BlogRoute: typeof BlogRouteWithChildren
   ContactRoute: typeof ContactRoute
   DownloadsRoute: typeof DownloadsRoute
   EventsRoute: typeof EventsRoute
@@ -408,6 +420,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TeamsSlugRouteImport
       parentRoute: typeof TeamsRoute
     }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof BlogRoute
+    }
     '/_authenticated/admin/': {
       id: '/_authenticated/admin/'
       path: '/admin'
@@ -492,6 +511,16 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
+interface BlogRouteChildren {
+  BlogSlugRoute: typeof BlogSlugRoute
+}
+
+const BlogRouteChildren: BlogRouteChildren = {
+  BlogSlugRoute: BlogSlugRoute,
+}
+
+const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
+
 interface TeamsRouteChildren {
   TeamsSlugRoute: typeof TeamsSlugRoute
 }
@@ -507,7 +536,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AboutRoute: AboutRoute,
   AuthRoute: AuthRoute,
-  BlogRoute: BlogRoute,
+  BlogRoute: BlogRouteWithChildren,
   ContactRoute: ContactRoute,
   DownloadsRoute: DownloadsRoute,
   EventsRoute: EventsRoute,
@@ -520,3 +549,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

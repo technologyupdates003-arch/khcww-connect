@@ -36,7 +36,7 @@ function Contact() {
   const [state, setState] = useState<"idle" | "submitting" | "sent" | "error">("idle");
   const [errMsg, setErrMsg] = useState("");
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const parsed = schema.safeParse(values);
     if (!parsed.success) {
@@ -47,8 +47,10 @@ function Contact() {
     }
     setErrors({});
     setState("submitting");
-    // Phase 2: persist to Lovable Cloud. For now, simulate success.
-    setTimeout(() => setState("sent"), 700);
+    const { supabase } = await import("@/integrations/supabase/client");
+    const { error } = await supabase.from("contact_messages").insert(parsed.data);
+    if (error) { setErrMsg(error.message); setState("error"); return; }
+    setState("sent");
   };
 
   return (
@@ -102,7 +104,7 @@ function Contact() {
                 {state === "submitting" ? <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Sending…</> : <><Send className="h-4 w-4 mr-2" /> Send message</>}
               </Button>
               <p className="text-xs text-muted-foreground">
-                Messages will be saved to the admin dashboard once Lovable Cloud is enabled in Phase 2.
+                Your message will be sent to the KHCWW administrators.
               </p>
             </>
           )}
