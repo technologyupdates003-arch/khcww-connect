@@ -53,7 +53,7 @@ function TeamPage() {
     (async () => {
       const { data } = await (supabase as any)
         .from("teams")
-        .select("id,slug,name,short,leader_name,members,activities")
+        .select("id,slug,name,short,leader_name,members,activities,image_url")
         .eq("slug", slug)
         .eq("published", true)
         .maybeSingle();
