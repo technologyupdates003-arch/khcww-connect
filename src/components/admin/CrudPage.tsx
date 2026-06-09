@@ -235,11 +235,11 @@ function FormDialog({
                 {f.label}
                 {f.required && <span className="text-destructive ml-1">*</span>}
               </Label>
-              {f.type === "textarea" ? (
+              {f.type === "textarea" || f.type === "list" ? (
                 <Textarea
-                  rows={6}
+                  rows={f.type === "list" ? 5 : 6}
                   required={f.required}
-                  placeholder={f.placeholder}
+                  placeholder={f.placeholder ?? (f.type === "list" ? "One item per line" : undefined)}
                   value={values[f.name] ?? ""}
                   onChange={(e) => setValues((v) => ({ ...v, [f.name]: e.target.value }))}
                 />
@@ -251,6 +251,16 @@ function FormDialog({
                   />
                   <span className="text-sm text-muted-foreground">{values[f.name] ? "Yes" : "No"}</span>
                 </div>
+              ) : f.type === "select" ? (
+                <select
+                  required={f.required}
+                  value={values[f.name] ?? ""}
+                  onChange={(e) => setValues((v) => ({ ...v, [f.name]: e.target.value }))}
+                  className="h-9 rounded-md border border-input bg-background px-3 text-sm"
+                >
+                  <option value="">Select…</option>
+                  {f.options?.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+                </select>
               ) : (
                 <Input
                   type={f.type === "datetime" ? "datetime-local" : f.type === "number" ? "number" : f.type === "url" ? "url" : "text"}
