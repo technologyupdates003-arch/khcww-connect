@@ -10,7 +10,8 @@ import { Button } from "@/components/ui/button";
 import logo from "@/assets/khcww-logo.png.asset.json";
 import { toast } from "sonner";
 
-const NAV = [
+type NavItem = { to: string; label: string; icon: typeof LayoutDashboard; exact?: boolean };
+const NAV: NavItem[] = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { to: "/admin/posts", label: "Blog posts", icon: Newspaper },
   { to: "/admin/gallery", label: "Gallery", icon: ImageIcon },
@@ -19,7 +20,7 @@ const NAV = [
   { to: "/admin/banners", label: "Hero banners", icon: Megaphone },
   { to: "/admin/messages", label: "Messages", icon: Mail },
   { to: "/admin/subscribers", label: "Subscribers", icon: Users },
-] as const;
+];
 
 export function AdminLayout({ title, children }: { title: string; children: ReactNode }) {
   const navigate = useNavigate();
