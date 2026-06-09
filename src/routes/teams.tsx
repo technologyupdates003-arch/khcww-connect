@@ -23,6 +23,7 @@ interface TeamRow {
   slug: string;
   name: string;
   short: string | null;
+  image_url: string | null;
 }
 
 function TeamsIndex() {
