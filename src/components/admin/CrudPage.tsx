@@ -15,7 +15,7 @@ import {
 import { Plus, Pencil, Trash2, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
-export type FieldType = "text" | "textarea" | "url" | "number" | "datetime" | "boolean" | "list" | "select";
+export type FieldType = "text" | "textarea" | "url" | "number" | "datetime" | "boolean" | "list" | "select" | "image";
 
 export interface FieldDef {
   name: string;
