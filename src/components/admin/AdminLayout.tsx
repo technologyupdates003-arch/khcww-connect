@@ -1,5 +1,5 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import {
   LayoutDashboard, Newspaper, Image as ImageIcon, Calendar,
   Download, Mail, Megaphone, Users, LogOut, Globe, UserSquare2, Users2,
@@ -28,12 +28,31 @@ export function AdminLayout({ title, children }: { title: string; children: Reac
   const navigate = useNavigate();
   const { user, isAdmin, loading } = useAuth();
   const path = useRouterState({ select: (s) => s.location.pathname });
+  const [unread, setUnread] = useState(0);
 
   useEffect(() => {
     if (!loading && user && !isAdmin) {
       toast.error("Your account is not an admin.");
     }
   }, [loading, user, isAdmin]);
+
+  useEffect(() => {
+    if (!isAdmin) return;
+    let cancelled = false;
+    const fetchUnread = async () => {
+      const { count } = await supabase
+        .from("contact_messages")
+        .select("id", { count: "exact", head: true })
+        .eq("read", false);
+      if (!cancelled) setUnread(count ?? 0);
+    };
+    void fetchUnread();
+    const channel = supabase
+      .channel("admin-messages")
+      .on("postgres_changes", { event: "*", schema: "public", table: "contact_messages" }, fetchUnread)
+      .subscribe();
+    return () => { cancelled = true; supabase.removeChannel(channel); };
+  }, [isAdmin, path]);
 
   const signOut = async () => {
     await supabase.auth.signOut();
@@ -73,6 +92,7 @@ export function AdminLayout({ title, children }: { title: string; children: Reac
         <nav className="p-3 grid gap-1">
           {NAV.map((n) => {
             const active = n.exact ? path === n.to : path.startsWith(n.to);
+            const showBadge = n.to === "/admin/messages" && unread > 0;
             return (
               <Link
                 key={n.to}
@@ -82,7 +102,12 @@ export function AdminLayout({ title, children }: { title: string; children: Reac
                 }`}
               >
                 <n.icon className="h-4 w-4" />
-                {n.label}
+                <span className="flex-1">{n.label}</span>
+                {showBadge && (
+                  <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full ${active ? "bg-white/25 text-white" : "bg-accent text-accent-foreground"}`}>
+                    {unread}
+                  </span>
+                )}
               </Link>
             );
           })}
