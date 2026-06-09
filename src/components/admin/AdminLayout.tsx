@@ -28,12 +28,31 @@ export function AdminLayout({ title, children }: { title: string; children: Reac
   const navigate = useNavigate();
   const { user, isAdmin, loading } = useAuth();
   const path = useRouterState({ select: (s) => s.location.pathname });
+  const [unread, setUnread] = useState(0);
 
   useEffect(() => {
     if (!loading && user && !isAdmin) {
       toast.error("Your account is not an admin.");
     }
   }, [loading, user, isAdmin]);
+
+  useEffect(() => {
+    if (!isAdmin) return;
+    let cancelled = false;
+    const fetchUnread = async () => {
+      const { count } = await supabase
+        .from("contact_messages")
+        .select("id", { count: "exact", head: true })
+        .eq("read", false);
+      if (!cancelled) setUnread(count ?? 0);
+    };
+    void fetchUnread();
+    const channel = supabase
+      .channel("admin-messages")
+      .on("postgres_changes", { event: "*", schema: "public", table: "contact_messages" }, fetchUnread)
+      .subscribe();
+    return () => { cancelled = true; supabase.removeChannel(channel); };
+  }, [isAdmin, path]);
 
   const signOut = async () => {
     await supabase.auth.signOut();
