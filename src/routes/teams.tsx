@@ -34,7 +34,7 @@ function TeamsIndex() {
     (async () => {
       const { data } = await (supabase as any)
         .from("teams")
-        .select("id,slug,name,short")
+        .select("id,slug,name,short,image_url")
         .eq("published", true)
         .order("sort_order", { ascending: true });
       setRows((data as TeamRow[]) ?? []);
