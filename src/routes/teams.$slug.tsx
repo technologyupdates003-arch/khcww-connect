@@ -142,12 +142,16 @@ function TeamPage() {
       )}
 
       <section className="container-x pb-20">
-        <div className="rounded-2xl border border-dashed border-border bg-surface-2 p-10 text-center">
-          <ImageIcon className="h-7 w-7 mx-auto text-muted-foreground" />
-          <p className="mt-3 text-sm text-muted-foreground">
-            Team gallery will appear here once photos are uploaded from the admin.
-          </p>
-        </div>
+        {team.image_url ? (
+          <img src={team.image_url} alt={team.name} className="w-full rounded-2xl border border-border object-cover max-h-[480px]" />
+        ) : (
+          <div className="rounded-2xl border border-dashed border-border bg-surface-2 p-10 text-center">
+            <ImageIcon className="h-7 w-7 mx-auto text-muted-foreground" />
+            <p className="mt-3 text-sm text-muted-foreground">
+              Team photo will appear here once uploaded from the admin.
+            </p>
+          </div>
+        )}
       </section>
     </SiteLayout>
   );
