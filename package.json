@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev",
-    "build": "vite build",
-    "build:dev": "vite build --mode development",
+    "build": "vite build && bun run cpanel:prepare",
+    "build:dev": "vite build --mode development && bun run cpanel:prepare",
+    "cpanel:prepare": "bun scripts/prepare-cpanel-build.mjs",
     "preview": "vite preview",
     "lint": "eslint .",
     "format": "prettier --write ."
