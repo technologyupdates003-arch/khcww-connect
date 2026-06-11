@@ -24,16 +24,6 @@ const NAV: NavItem[] = [
   { to: "/admin/subscribers", label: "Subscribers", icon: Users },
   { to: "/admin/settings", label: "Site settings", icon: Settings },
 ];
-  { to: "/admin/posts", label: "Blog posts", icon: Newspaper },
-  { to: "/admin/gallery", label: "Gallery", icon: ImageIcon },
-  { to: "/admin/events", label: "Events", icon: Calendar },
-  { to: "/admin/downloads", label: "Downloads", icon: Download },
-  { to: "/admin/banners", label: "Hero banners", icon: Megaphone },
-  { to: "/admin/leaders", label: "Leadership", icon: UserSquare2 },
-  { to: "/admin/teams", label: "Welfare teams", icon: Users2 },
-  { to: "/admin/messages", label: "Messages", icon: Mail },
-  { to: "/admin/subscribers", label: "Subscribers", icon: Users },
-];
 
 export function AdminLayout({ title, children }: { title: string; children: ReactNode }) {
   const navigate = useNavigate();
