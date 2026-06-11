@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
-import logo from "@/assets/khcww-logo.png.asset.json";
+const logo = { url: "/khcww-logo.png" };
 import { SITE } from "@/lib/site-data";
 import { Button } from "@/components/ui/button";
 

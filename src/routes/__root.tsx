@@ -12,7 +12,7 @@ import { Toaster } from "sonner";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
-import logo from "@/assets/khcww-logo.png.asset.json";
+const logo = { url: "/khcww-logo.png" };
 
 function NotFoundComponent() {
   return (

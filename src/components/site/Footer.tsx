@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Facebook, Twitter, Instagram, Youtube, Mail, Phone, MapPin, Send, Loader2 } from "lucide-react";
-import logo from "@/assets/khcww-logo.png.asset.json";
+const logo = { url: "/khcww-logo.png" };
 import { SITE } from "@/lib/site-data";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";

@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, HeartHandshake, ShieldCheck, Users, Sparkles, Activity, Calendar } from "lucide-react";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { Button } from "@/components/ui/button";
-import logo from "@/assets/khcww-logo.png.asset.json";
+const logo = { url: "/khcww-logo.png" };
 import { SITE, TEAMS, EXECUTIVE } from "@/lib/site-data";
 
 export const Route = createFileRoute("/")({
