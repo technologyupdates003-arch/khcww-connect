@@ -312,7 +312,6 @@ function ImageUploadField({ value, onChange }: { value: string; onChange: (url: 
         {value && <Button type="button" variant="ghost" size="sm" onClick={() => onChange("")}>Clear</Button>}
       </div>
       {busy && <p className="text-xs text-muted-foreground inline-flex items-center gap-1"><Loader2 className="h-3 w-3 animate-spin" /> Uploading…</p>}
-      <Input type="url" placeholder="…or paste an image URL" value={value} onChange={(e) => onChange(e.target.value)} />
     </div>
   );
 }
