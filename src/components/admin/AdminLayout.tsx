@@ -2,7 +2,7 @@ import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
 import {
   LayoutDashboard, Newspaper, Image as ImageIcon, Calendar,
-  Download, Mail, Megaphone, Users, LogOut, Globe, UserSquare2, Users2,
+  Download, Mail, Megaphone, Users, LogOut, Globe, UserSquare2, Users2, Settings,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/use-auth";
@@ -13,6 +13,17 @@ import { toast } from "sonner";
 type NavItem = { to: string; label: string; icon: typeof LayoutDashboard; exact?: boolean };
 const NAV: NavItem[] = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
+  { to: "/admin/posts", label: "Blog posts", icon: Newspaper },
+  { to: "/admin/gallery", label: "Gallery", icon: ImageIcon },
+  { to: "/admin/events", label: "Events", icon: Calendar },
+  { to: "/admin/downloads", label: "Downloads", icon: Download },
+  { to: "/admin/banners", label: "Hero banners", icon: Megaphone },
+  { to: "/admin/leaders", label: "Leadership", icon: UserSquare2 },
+  { to: "/admin/teams", label: "Welfare teams", icon: Users2 },
+  { to: "/admin/messages", label: "Messages", icon: Mail },
+  { to: "/admin/subscribers", label: "Subscribers", icon: Users },
+  { to: "/admin/settings", label: "Site settings", icon: Settings },
+];
   { to: "/admin/posts", label: "Blog posts", icon: Newspaper },
   { to: "/admin/gallery", label: "Gallery", icon: ImageIcon },
   { to: "/admin/events", label: "Events", icon: Calendar },
