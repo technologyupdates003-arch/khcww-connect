@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import logo from "@/assets/khcww-logo.png.asset.json";
+const logo = { url: "/khcww-logo.png" };
 
 export const Route = createFileRoute("/auth")({
   ssr: false,
