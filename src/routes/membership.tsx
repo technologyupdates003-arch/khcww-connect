@@ -235,7 +235,7 @@ function Step1({
       {error && <ErrorBanner message={error} />}
       <ul className="space-y-3 text-sm">
         {[
-          "You must be a practicing or retired health care worker in Kirinyaga County.",
+          "You must be a practicing health care worker in Kirinyaga County.",
           "You must provide a valid M-Pesa phone number for the registration fee.",
           "Your registration must be approved by the Welfare Committee.",
         ].map((t) => (

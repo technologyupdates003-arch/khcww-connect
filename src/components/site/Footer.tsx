@@ -116,6 +116,9 @@ export function Footer() {
             <Link to="/auth" className="opacity-60 hover:opacity-100">Admin</Link>
           </div>
         </div>
+        <div className="container-x pb-5 text-center text-xs text-muted-foreground">
+          Developed by <span className="font-medium text-foreground">Deniss Murimi</span>
+        </div>
       </div>
     </footer>
   );

@@ -296,6 +296,51 @@ export type Database = {
         }
         Relationships: []
       }
+      site_settings: {
+        Row: {
+          address: string | null
+          contact_email: string | null
+          contact_phone: string | null
+          created_at: string
+          emergency_phone: string | null
+          facebook_url: string | null
+          id: string
+          instagram_url: string | null
+          singleton: boolean
+          twitter_url: string | null
+          updated_at: string
+          youtube_url: string | null
+        }
+        Insert: {
+          address?: string | null
+          contact_email?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          emergency_phone?: string | null
+          facebook_url?: string | null
+          id?: string
+          instagram_url?: string | null
+          singleton?: boolean
+          twitter_url?: string | null
+          updated_at?: string
+          youtube_url?: string | null
+        }
+        Update: {
+          address?: string | null
+          contact_email?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          emergency_phone?: string | null
+          facebook_url?: string | null
+          id?: string
+          instagram_url?: string | null
+          singleton?: boolean
+          twitter_url?: string | null
+          updated_at?: string
+          youtube_url?: string | null
+        }
+        Relationships: []
+      }
       teams: {
         Row: {
           activities: string[]
