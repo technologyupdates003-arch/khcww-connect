@@ -27,6 +27,7 @@ import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 import { Route as AuthenticatedAdminTeamsRouteImport } from './routes/_authenticated/admin.teams'
 import { Route as AuthenticatedAdminSubscribersRouteImport } from './routes/_authenticated/admin.subscribers'
+import { Route as AuthenticatedAdminSettingsRouteImport } from './routes/_authenticated/admin.settings'
 import { Route as AuthenticatedAdminPostsRouteImport } from './routes/_authenticated/admin.posts'
 import { Route as AuthenticatedAdminMessagesRouteImport } from './routes/_authenticated/admin.messages'
 import { Route as AuthenticatedAdminLeadersRouteImport } from './routes/_authenticated/admin.leaders'
@@ -125,6 +126,12 @@ const AuthenticatedAdminSubscribersRoute =
     path: '/admin/subscribers',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedAdminSettingsRoute =
+  AuthenticatedAdminSettingsRouteImport.update({
+    id: '/admin/settings',
+    path: '/admin/settings',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedAdminPostsRoute = AuthenticatedAdminPostsRouteImport.update({
   id: '/admin/posts',
   path: '/admin/posts',
@@ -189,6 +196,7 @@ export interface FileRoutesByFullPath {
   '/admin/leaders': typeof AuthenticatedAdminLeadersRoute
   '/admin/messages': typeof AuthenticatedAdminMessagesRoute
   '/admin/posts': typeof AuthenticatedAdminPostsRoute
+  '/admin/settings': typeof AuthenticatedAdminSettingsRoute
   '/admin/subscribers': typeof AuthenticatedAdminSubscribersRoute
   '/admin/teams': typeof AuthenticatedAdminTeamsRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
@@ -215,6 +223,7 @@ export interface FileRoutesByTo {
   '/admin/leaders': typeof AuthenticatedAdminLeadersRoute
   '/admin/messages': typeof AuthenticatedAdminMessagesRoute
   '/admin/posts': typeof AuthenticatedAdminPostsRoute
+  '/admin/settings': typeof AuthenticatedAdminSettingsRoute
   '/admin/subscribers': typeof AuthenticatedAdminSubscribersRoute
   '/admin/teams': typeof AuthenticatedAdminTeamsRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
@@ -243,6 +252,7 @@ export interface FileRoutesById {
   '/_authenticated/admin/leaders': typeof AuthenticatedAdminLeadersRoute
   '/_authenticated/admin/messages': typeof AuthenticatedAdminMessagesRoute
   '/_authenticated/admin/posts': typeof AuthenticatedAdminPostsRoute
+  '/_authenticated/admin/settings': typeof AuthenticatedAdminSettingsRoute
   '/_authenticated/admin/subscribers': typeof AuthenticatedAdminSubscribersRoute
   '/_authenticated/admin/teams': typeof AuthenticatedAdminTeamsRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
@@ -271,6 +281,7 @@ export interface FileRouteTypes {
     | '/admin/leaders'
     | '/admin/messages'
     | '/admin/posts'
+    | '/admin/settings'
     | '/admin/subscribers'
     | '/admin/teams'
     | '/admin/'
@@ -297,6 +308,7 @@ export interface FileRouteTypes {
     | '/admin/leaders'
     | '/admin/messages'
     | '/admin/posts'
+    | '/admin/settings'
     | '/admin/subscribers'
     | '/admin/teams'
     | '/admin'
@@ -324,6 +336,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin/leaders'
     | '/_authenticated/admin/messages'
     | '/_authenticated/admin/posts'
+    | '/_authenticated/admin/settings'
     | '/_authenticated/admin/subscribers'
     | '/_authenticated/admin/teams'
     | '/_authenticated/admin/'
@@ -473,6 +486,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminSubscribersRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/admin/settings': {
+      id: '/_authenticated/admin/settings'
+      path: '/admin/settings'
+      fullPath: '/admin/settings'
+      preLoaderRoute: typeof AuthenticatedAdminSettingsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/admin/posts': {
       id: '/_authenticated/admin/posts'
       path: '/admin/posts'
@@ -533,6 +553,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminLeadersRoute: typeof AuthenticatedAdminLeadersRoute
   AuthenticatedAdminMessagesRoute: typeof AuthenticatedAdminMessagesRoute
   AuthenticatedAdminPostsRoute: typeof AuthenticatedAdminPostsRoute
+  AuthenticatedAdminSettingsRoute: typeof AuthenticatedAdminSettingsRoute
   AuthenticatedAdminSubscribersRoute: typeof AuthenticatedAdminSubscribersRoute
   AuthenticatedAdminTeamsRoute: typeof AuthenticatedAdminTeamsRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
@@ -546,6 +567,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminLeadersRoute: AuthenticatedAdminLeadersRoute,
   AuthenticatedAdminMessagesRoute: AuthenticatedAdminMessagesRoute,
   AuthenticatedAdminPostsRoute: AuthenticatedAdminPostsRoute,
+  AuthenticatedAdminSettingsRoute: AuthenticatedAdminSettingsRoute,
   AuthenticatedAdminSubscribersRoute: AuthenticatedAdminSubscribersRoute,
   AuthenticatedAdminTeamsRoute: AuthenticatedAdminTeamsRoute,
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
