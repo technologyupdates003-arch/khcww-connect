@@ -20,7 +20,7 @@ export const Route = createFileRoute("/_authenticated/admin/gallery")({
         fields={[
           { name: "title", label: "Title", type: "text", required: true },
           { name: "caption", label: "Caption", type: "textarea" },
-          { name: "image_url", label: "Image URL", type: "url", required: true, help: "Paste a public image URL" },
+          { name: "image_url", label: "Image", type: "image", required: true, help: "Upload an image" },
           { name: "category", label: "Category", type: "text", defaultValue: "General" },
           { name: "sort_order", label: "Sort order", type: "number", defaultValue: 0 },
         ]}
