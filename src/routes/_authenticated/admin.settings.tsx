@@ -77,7 +77,7 @@ function SettingsPage() {
   );
 
   return (
-    <AdminLayout title="Site settings">
+    <AdminLayout title="Contact settings">
       {loading ? (
         <div className="p-10 text-center"><Loader2 className="h-5 w-5 animate-spin inline" /></div>
       ) : (
