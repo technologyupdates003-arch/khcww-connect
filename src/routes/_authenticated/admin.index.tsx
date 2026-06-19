@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Newspaper, Image as ImageIcon, Calendar, Download, Mail, Users, Megaphone, ArrowRight } from "lucide-react";
+import { Newspaper, Image as ImageIcon, Calendar, Download, Mail, Users, Megaphone, ArrowRight, Settings } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 
@@ -16,6 +16,7 @@ const CARDS = [
   { key: "hero_banners", label: "Hero banners", to: "/admin/banners", icon: Megaphone },
   { key: "contact_messages", label: "Messages", to: "/admin/messages", icon: Mail },
   { key: "newsletter_subscribers", label: "Subscribers", to: "/admin/subscribers", icon: Users },
+  { key: "site_settings", label: "Contact settings", to: "/admin/settings", icon: Settings },
 ] as const;
 
 function AdminDashboard() {
