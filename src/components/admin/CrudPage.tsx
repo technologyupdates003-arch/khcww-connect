@@ -12,7 +12,7 @@ import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Plus, Pencil, Trash2, Loader2 } from "lucide-react";
+import { Plus, Pencil, Trash2, Loader2, UploadCloud } from "lucide-react";
 import { toast } from "sonner";
 
 export type FieldType = "text" | "textarea" | "url" | "number" | "datetime" | "boolean" | "list" | "select" | "image";
@@ -312,8 +312,12 @@ function ImageUploadField({ value, onChange }: { value: string; onChange: (url: 
   return (
     <div className="grid gap-2">
       {value && <img src={value} alt="" className="h-24 w-24 rounded-md object-cover border border-border" />}
-      <div className="flex items-center gap-2">
-        <Input type="file" accept="image/*" onChange={onPick} disabled={busy} className="cursor-pointer file:mr-3 file:rounded-md file:bg-primary file:px-3 file:py-1 file:text-primary-foreground" />
+      <div className="flex flex-wrap items-center gap-2">
+        <Label className="inline-flex h-9 cursor-pointer items-center justify-center gap-2 rounded-md border border-input bg-background px-3 text-sm font-medium shadow-sm hover:bg-accent hover:text-accent-foreground">
+          <UploadCloud className="h-4 w-4" />
+          Upload image
+          <Input type="file" accept="image/*" onChange={onPick} disabled={busy} className="sr-only" />
+        </Label>
         {value && <Button type="button" variant="ghost" size="sm" onClick={() => onChange("")}>Clear</Button>}
       </div>
       {busy && <p className="text-xs text-muted-foreground inline-flex items-center gap-1"><Loader2 className="h-3 w-3 animate-spin" /> Uploading image…</p>}
