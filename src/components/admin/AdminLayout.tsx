@@ -22,7 +22,7 @@ const NAV: NavItem[] = [
   { to: "/admin/teams", label: "Welfare teams", icon: Users2 },
   { to: "/admin/messages", label: "Messages", icon: Mail },
   { to: "/admin/subscribers", label: "Subscribers", icon: Users },
-  { to: "/admin/settings", label: "Site settings", icon: Settings },
+  { to: "/admin/settings", label: "Contact settings", icon: Settings },
 ];
 
 export function AdminLayout({ title, children }: { title: string; children: ReactNode }) {
@@ -90,7 +90,7 @@ export function AdminLayout({ title, children }: { title: string; children: Reac
             <div className="text-[10px] uppercase tracking-widest text-muted-foreground mt-1">Admin</div>
           </div>
         </div>
-        <nav className="p-3 grid gap-1">
+        <nav className="p-3 grid gap-1 flex-1 overflow-y-auto">
           {NAV.map((n) => {
             const active = n.exact ? path === n.to : path.startsWith(n.to);
             const showBadge = n.to === "/admin/messages" && unread > 0;

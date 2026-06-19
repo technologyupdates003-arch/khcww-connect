@@ -12,7 +12,7 @@ import {
   AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Plus, Pencil, Trash2, Loader2 } from "lucide-react";
+import { Plus, Pencil, Trash2, Loader2, UploadCloud } from "lucide-react";
 import { toast } from "sonner";
 
 export type FieldType = "text" | "textarea" | "url" | "number" | "datetime" | "boolean" | "list" | "select" | "image";
@@ -295,23 +295,57 @@ function ImageUploadField({ value, onChange }: { value: string; onChange: (url: 
   const onPick = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please choose an image file.");
+      return;
+    }
     setBusy(true);
-    const ext = file.name.split(".").pop() || "jpg";
-    const path = `${crypto.randomUUID()}.${ext}`;
-    const { error } = await supabase.storage.from("public-images").upload(path, file, { contentType: file.type, upsert: false });
-    if (error) { toast.error(error.message); setBusy(false); return; }
-    const { data } = supabase.storage.from("public-images").getPublicUrl(path);
-    onChange(data.publicUrl);
+    try {
+      const dataUrl = await fileToOptimizedDataUrl(file);
+      onChange(dataUrl);
+      toast.success("Image uploaded");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Image upload failed");
+    }
     setBusy(false);
   };
   return (
     <div className="grid gap-2">
       {value && <img src={value} alt="" className="h-24 w-24 rounded-md object-cover border border-border" />}
-      <div className="flex items-center gap-2">
-        <Input type="file" accept="image/*" onChange={onPick} disabled={busy} />
+      <div className="flex flex-wrap items-center gap-2">
+        <Label className="inline-flex h-9 cursor-pointer items-center justify-center gap-2 rounded-md border border-input bg-background px-3 text-sm font-medium shadow-sm hover:bg-accent hover:text-accent-foreground">
+          <UploadCloud className="h-4 w-4" />
+          Upload image
+          <input type="file" accept="image/*" onChange={onPick} disabled={busy} className="sr-only" />
+        </Label>
         {value && <Button type="button" variant="ghost" size="sm" onClick={() => onChange("")}>Clear</Button>}
       </div>
-      {busy && <p className="text-xs text-muted-foreground inline-flex items-center gap-1"><Loader2 className="h-3 w-3 animate-spin" /> Uploading…</p>}
+      {busy && <p className="text-xs text-muted-foreground inline-flex items-center gap-1"><Loader2 className="h-3 w-3 animate-spin" /> Uploading image…</p>}
     </div>
   );
+}
+
+async function fileToOptimizedDataUrl(file: File) {
+  const image = await new Promise<HTMLImageElement>((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = () => reject(new Error("This image could not be read."));
+    img.src = URL.createObjectURL(file);
+  });
+
+  const maxSize = 1600;
+  const scale = Math.min(1, maxSize / Math.max(image.width, image.height));
+  const canvas = document.createElement("canvas");
+  canvas.width = Math.max(1, Math.round(image.width * scale));
+  canvas.height = Math.max(1, Math.round(image.height * scale));
+  const context = canvas.getContext("2d");
+  if (!context) throw new Error("Image upload is not supported in this browser.");
+  context.drawImage(image, 0, 0, canvas.width, canvas.height);
+  URL.revokeObjectURL(image.src);
+
+  const dataUrl = canvas.toDataURL("image/jpeg", 0.84);
+  if (dataUrl.length > 1_500_000) {
+    throw new Error("Please upload a smaller image.");
+  }
+  return dataUrl;
 }

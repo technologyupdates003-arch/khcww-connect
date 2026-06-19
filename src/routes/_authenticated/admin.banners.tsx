@@ -18,7 +18,7 @@ export const Route = createFileRoute("/_authenticated/admin/banners")({
         fields={[
           { name: "title", label: "Headline", type: "text", required: true },
           { name: "subtitle", label: "Subtitle", type: "textarea" },
-          { name: "image_url", label: "Background image URL", type: "url" },
+          { name: "image_url", label: "Background image", type: "image" },
           { name: "cta_label", label: "Button label", type: "text", placeholder: "e.g. Join KHCWW" },
           { name: "cta_url", label: "Button URL", type: "text", placeholder: "e.g. /membership" },
           { name: "active", label: "Active", type: "boolean", defaultValue: true },
