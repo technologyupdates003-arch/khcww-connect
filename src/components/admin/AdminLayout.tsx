@@ -22,7 +22,7 @@ const NAV: NavItem[] = [
   { to: "/admin/teams", label: "Welfare teams", icon: Users2 },
   { to: "/admin/messages", label: "Messages", icon: Mail },
   { to: "/admin/subscribers", label: "Subscribers", icon: Users },
-  { to: "/admin/settings", label: "Site settings", icon: Settings },
+  { to: "/admin/settings", label: "Contact settings", icon: Settings },
 ];
 
 export function AdminLayout({ title, children }: { title: string; children: ReactNode }) {
