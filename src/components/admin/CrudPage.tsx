@@ -316,7 +316,7 @@ function ImageUploadField({ value, onChange }: { value: string; onChange: (url: 
         <Label className="inline-flex h-9 cursor-pointer items-center justify-center gap-2 rounded-md border border-input bg-background px-3 text-sm font-medium shadow-sm hover:bg-accent hover:text-accent-foreground">
           <UploadCloud className="h-4 w-4" />
           Upload image
-          <Input type="file" accept="image/*" onChange={onPick} disabled={busy} className="sr-only" />
+          <input type="file" accept="image/*" onChange={onPick} disabled={busy} className="sr-only" />
         </Label>
         {value && <Button type="button" variant="ghost" size="sm" onClick={() => onChange("")}>Clear</Button>}
       </div>
